@@ -389,7 +389,29 @@ def button(x, y, text, command = lambda : None):
             command()
     pygame.draw.rect(screen, (0, 0, 0), (x, y, 100, 70), 2)
     drawtext(text, 20, (0, 0, 0), (x+10, y+23))
-
+def change_cursor():
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    inside = mouse_x > CanvasX and mouse_x < CanvasX+length*10-10 and mouse_y > CanvasY and mouse_y < CanvasY+length*10-10
+    if inside:
+        pygame.mouse.set_visible(False)
+        if curr_tool == 'brush':
+            pygame.draw.ellipse(screen, brush_color, (mouse_x-5, mouse_y-5, brush_size*10, brush_size*10))
+            if brush_color[0] < 100 and brush_color[1] < 100 and brush_color[2] < 100:
+                pygame.draw.ellipse(screen, (255, 255, 255), (mouse_x-5, mouse_y-5, brush_size*10, brush_size*10), 2)
+            else:
+                pygame.draw.ellipse(screen, (0, 0, 0), (mouse_x-5, mouse_y-5, brush_size*10, brush_size*10), 2)
+        if curr_tool == 'eraser':
+            pygame.draw.ellipse(screen, bg_color, (mouse_x-5, mouse_y-5, eraser_size*10, eraser_size*10))
+            if bg_color[0] < 100 and bg_color[1] < 100 and bg_color[2] < 100:
+                pygame.draw.ellipse(screen, (255, 255, 255), (mouse_x-5, mouse_y-5, eraser_size*10, eraser_size*10), 2)
+            else:
+                pygame.draw.ellipse(screen, (0, 0, 0), (mouse_x-5, mouse_y-5, eraser_size*10, eraser_size*10), 2)
+        if curr_tool == 'paint bucket':
+            screen.blit(pygame.transform.scale(paint_bucket_tool_img, (30, 30)), (mouse_x-30, mouse_y-25))
+        if curr_tool == 'color picker':
+            screen.blit(pygame.transform.scale(color_picker_tool_img, (30, 30)), (mouse_x, mouse_y-25))
+    else:
+        pygame.mouse.set_visible(True)
 
 while running:
 
@@ -447,5 +469,7 @@ while running:
     button(610, 717, '  Open', Open)
 
     button(715, 717, 'Capture', Capture)
+    
+    change_cursor()
 
     pygame.display.update()
