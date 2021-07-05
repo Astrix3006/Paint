@@ -1,4 +1,4 @@
-# This program belongs to Krishna Sai Jonnalgedda 
+# This program belongs to Krishna Sai Jonnalagedda 
 
 import pygame
 import tkinter as tk
